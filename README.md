@@ -1,5 +1,7 @@
 # js-packager
 
+JS packager is a javascript build helper.
+
 ### Basics
 Takes a directory structure of javascript packages (`module.exports...`)
 ```
@@ -42,3 +44,21 @@ var IsValid = function(value){
 
 module.exports = IsValid;
 ```
+
+### Usage
+
+```js
+
+var packager = require("js-packager")
+
+packager({
+	"src_dir" : "./sample-data",
+	"output_file": "./my-lib.js",
+	"package_name": "MyLib",
+})
+
+```
+
+### Test
+
+Run tests using `./test.sh`
