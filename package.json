@@ -1,0 +1,23 @@
+{
+  "name": "js-packager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./test.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natethebosch/js-packager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/natethebosch/js-packager/issues"
+  },
+  "homepage": "https://github.com/natethebosch/js-packager#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.5.0",
+    "karma-jasmine": "^1.0.2"
+  }
+}
