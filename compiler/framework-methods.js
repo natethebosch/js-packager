@@ -12,6 +12,17 @@ var register = function(name, object){
 };
 
 var getDependancy = function(name){
+    if(objs[name] == undefined){
+        var out = {};
+        for(var i in objs){
+            if(i.match(new RegExp(name + "\.[^\.]+$"))){
+                out[i.substring(i.lastIndexOf(".")+1)] = objs[i];
+            }
+        }
+
+        return out;
+    }
+
 	return objs[name];
 };
 
