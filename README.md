@@ -55,8 +55,9 @@ packager({
 	"src_dir" : "./sample-data",
 	"output_file": "./my-lib.js",
 	"package_name": "MyLib",
+	"skip_files_matching": /\.test\.js/
 })
-
+	
 ```
 
 ### Test

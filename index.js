@@ -2,7 +2,7 @@
 * @Author: Nate Bosscher (c) 2015
 * @Date:   2016-09-03 16:16:08
 * @Last Modified by:   Nate Bosscher
-* @Last Modified time: 2016-09-05 11:28:23
+* @Last Modified time: 2016-09-06 08:25:51
 */
 
 var resolve_dir = require("./resolve-dir");
@@ -13,7 +13,10 @@ var compile = require("./compiler");
 
 /**
  * run_options_spec = {
- * 		src_dir: "relative or abs path"
+ * 		src_dir: "relative or abs path",
+ * 		output_file: "relative or abs file path",
+ * 		package_name: "string",
+ * 		skip_files_matching: "RegExp (optional)"
  * }
  * @return none
  */
@@ -31,6 +34,10 @@ var runner = function(run_options_spec, callback){
 		throw "Missing package_name"
 	}
 
+	if(run_options_spec.skip_files_matching && !(run_options_spec.skip_files_matching instanceof RegExp)){
+		throw "skip_files_matching property should be an instance of RegExp";
+	}
+
 	run_options_spec.output_file = resolve_dir(run_options_spec.output_file);
 
 	var base_dir = resolve_dir(run_options_spec.src_dir);
@@ -42,6 +49,12 @@ var runner = function(run_options_spec, callback){
 		files = filter(files, function(el){
 			return el.match(/\.js$/);
 		});
+
+		if(run_options_spec.skip_files_matching){
+			files = filter(files, function(el){
+				return !el.match(run_options_spec.skip_files_matching);
+			});
+		}
 
 		reader(files, function(file_data_list, err){
 			if(err){
