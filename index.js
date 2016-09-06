@@ -68,7 +68,8 @@ var runner = function(run_options_spec, callback){
 				package_name: run_options_spec.package_name
 			});
 
-			callback();
+            if(callback)
+			    callback();
 		});
 	});
 };
