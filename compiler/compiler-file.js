@@ -41,14 +41,11 @@ var File = function(file_spec, base_dir){
 			var n = reqrs[i].replace(/^require\(/, "").replace(/\)$/, "")
 			n = n.replace(/(^['"]+|['"]+$)/g, "");
 
-            console.log(n, this.rel_dir_name);
 			var pth = path.resolve(this.rel_dir_name, n);
 
             var objPth = objNameFromFileName(pth);
 			var req = this.obj_map.lookup(objPth);
 			if(!req){
-
-		        console.log("lu failed")
 
 				// assume pth is a directory name. append fileName, resolve objname
 				// and then remove fileName portion
@@ -63,12 +60,6 @@ var File = function(file_spec, base_dir){
 			this.req_map[objPth] = reqrs[i];
 			this.requires[i] = objPth;
 		}
-
-        console.log({
-            file_name: this.file_name,
-            reqr: reqrs,
-            requires: this.requires,
-        })
 
 	};
 

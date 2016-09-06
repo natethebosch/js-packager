@@ -19,10 +19,10 @@ var ObjMapManager = function(files){
 	var objMap = {}; // "a.b" => CompilerFile or CompilerDir
 	this.length = 0;
 
-	this.getChildrenOf = function(dir){
+	this.getDirectChildrenOf = function(dir){
 		var lst = [];
 
-		var regexp = new RegExp("^" + dir + "\.[^\.]+");
+		var regexp = new RegExp("^" + dir + "\.[^\.]+$");
 		for(var i in objMap){
 			if(regexp.test(i)){
 				lst.push(i);
@@ -35,8 +35,6 @@ var ObjMapManager = function(files){
 	this.lookup = function(el){
 		return objMap[el];
 	};
-
-
 	
 	(function(){
 		var dirLst = [];

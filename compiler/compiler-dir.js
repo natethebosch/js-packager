@@ -20,7 +20,7 @@ var CompilerDir = function(compile_dir_spec){
 
 	this.setObjMap = function(obj){
 		this.obj_map = obj;
-		this.children = this.obj_map.getChildrenOf(this.dir);
+		this.children = this.obj_map.getDirectChildrenOf(this.dir);
 	};
 
 	/**
@@ -36,20 +36,26 @@ var CompilerDir = function(compile_dir_spec){
 			throw "Circular reference check failed to resolve (max-depth reached) for path " + circular_spec.path.join("\n\t-> ");
 
 		for(var i = 0; i < this.children.length; i++){
-			circular_spec.path.push(this.children[i]);
-
-			if(!arrayContainsUniqueValues(circular_spec.path)){
-				throw "Circular reference for path \n\t-> " + circular_spec.path.join("\n\t-> ");
-			}
 
 			var fileOrDir = circular_spec.map.lookup(this.children[i]);
-			fileOrDir.checkForCircularRefs({
-				max_depth: circular_spec.max_depth -1,
-				path: circular_spec.path,
-				map: circular_spec.map
-			});
+			if(fileOrDir.constructor == CompilerDir){
+			    // skip b/c require directory will only give access
+			    // to files in that directory, not sub-dirs
+			}else{
+			    circular_spec.path.push(this.children[i]);
 
-			circular_spec.path.pop(); // remove sub-item from path 
+                if(!arrayContainsUniqueValues(circular_spec.path)){
+                    throw "Circular reference for path \n\t-> " + circular_spec.path.join("\n\t-> ");
+                }
+
+                fileOrDir.checkForCircularRefs({
+                    max_depth: circular_spec.max_depth -1,
+                    path: circular_spec.path,
+                    map: circular_spec.map
+                });
+
+                circular_spec.path.pop(); // remove sub-item from path
+			}
 		}
 	};
 
@@ -61,8 +67,14 @@ var CompilerDir = function(compile_dir_spec){
 		}
 
 		for(var i = 0; i < this.children.length; i++){
-			if(this.obj_map.lookup(this.children[i]).dependsOn(name)){
-				return true;
+		    var fileOrDir = this.obj_map.lookup(this.children[i]);
+            if(fileOrDir.constructor == CompilerDir){
+                // skip b/c require directory will only give access
+                // to files in that directory, not sub-dirs
+            }else{
+                if(fileOrDir.dependsOn(name)){
+                    return true;
+                }
 			}
 		}
 

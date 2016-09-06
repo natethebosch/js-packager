@@ -5,6 +5,7 @@
 * @Last Modified time: 2016-09-05 11:31:11
 */
 var fs = require('fs');
+var path = require("path");
 
 var objNameFromFileName = require("./compiler/obj-name-from-file-name");
 var ObjMapManager = require("./compiler/obj-map");
@@ -95,13 +96,14 @@ var compiler = function(compiler_spec){
 			+ "})(" + fx_param_values.join(", ") + ") )");
 	}
 
-	var frameworkMethods = fs.readFileSync("./compiler/framework-methods.js").toString();
+    var file = __dirname + "/compiler/framework-methods.js";
+	var frameworkMethods = fs.readFileSync(file).toString();
 
 	var out = "var " + compiler_spec.package_name + " (function(){" + "\n"
 		+ indent(frameworkMethods) + "\n\n"
 		+ indent(build.join("\n\n")) + "\n\n"
 		+ indent("return getObject()") + "\n"
-	+ "})()"
+	+ "})()";
 
 	fs.writeFileSync(compiler_spec.output_file, out);
 };
