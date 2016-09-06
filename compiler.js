@@ -59,15 +59,23 @@ var compiler = function(compiler_spec){
 
 
 	// sort so that dependancies are at nearer to the front
-	files.sort(function(a, b){
-		if(a.dependsOn(b)){
-			return -1;
-		}else if(b.dependsOn(a)){
-			return 1;
-		}else{
-			return 0;
-		}
-	});
+	files = (function(file_list){
+
+        var lst = [];
+        for(var i = 0; i < file_list.length; i++){
+            var add = file_list[i];
+            var j = 0;
+
+            while(j < lst.length && !lst[j].dependsOn(add)){
+                j++;
+            }
+
+            lst.splice(j, 0, add);
+        }
+
+        return lst;
+    })(files);
+
 
 	var build = [];
 	/* build => array of =>

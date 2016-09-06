@@ -63,14 +63,19 @@ var File = function(file_spec, base_dir){
 
 	};
 
-	// name => obj.name
-	this.dependsOn = function(name){
-		if(this.requires.indexOf(name) != -1){
+	// obj => CompilerDir | CompilerFile
+	this.dependsOn = function(obj){
+
+//	    console.log(obj.obj_name, this.requires, this.obj_name);
+
+		if(this.requires.indexOf(obj.obj_name) != -1){
 			return true;
 		}
 
 		for(var i = 0; i < this.requires.length; i++){
-			if(this.obj_map.lookup(this.requires[i]).dependsOn(name)){
+
+		    var rq = this.obj_map.lookup(this.requires[i]);
+			if(rq.obj_name == obj.obj_name || rq.dependsOn(obj)){
 				return true;
 			}
 		}

@@ -17,6 +17,7 @@ var CompilerDir = function(compile_dir_spec){
 	this.children = [];
 	this.dir = compile_dir_spec.dir;
 	this.obj_map = null;
+	this.obj_name = this.dir;
 
 	this.setObjMap = function(obj){
 		this.obj_map = obj;
@@ -59,12 +60,9 @@ var CompilerDir = function(compile_dir_spec){
 		}
 	};
 
-	// name => obj.name
+	// obj => CompilerDir | CompilerFile
 	// same as compiler-file except uses children as dependancies
-	this.dependsOn = function(name){
-		if(this.children.indexOf(name) != -1){
-			return true;
-		}
+	this.dependsOn = function(obj){
 
 		for(var i = 0; i < this.children.length; i++){
 		    var fileOrDir = this.obj_map.lookup(this.children[i]);
@@ -72,7 +70,7 @@ var CompilerDir = function(compile_dir_spec){
                 // skip b/c require directory will only give access
                 // to files in that directory, not sub-dirs
             }else{
-                if(fileOrDir.dependsOn(name)){
+                if(fileOrDir.obj_name == obj.obj_name || fileOrDir.dependsOn(obj)){
                     return true;
                 }
 			}
