@@ -17,6 +17,7 @@ var compile = require("./compiler");
  * 		output_file: "relative or abs file path",
  * 		package_name: "string",
  * 		skip_files_matching: "RegExp (optional)"
+ *      with_tests: bool (optional) -- include tests in output file
  * }
  * @return none
  */

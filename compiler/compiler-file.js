@@ -33,12 +33,12 @@ var File = function(file_spec, base_dir){
 	this.setObjMap = function(obj){
 		this.obj_map = obj;
 
-		var reqrs = file_spec.file_contents.toString().match(/require\([^\)]+\)/g);
+		var reqrs = file_spec.file_contents.toString().match(/[^\.]require\([^\)]+\)/g);
 		if(!reqrs)
 			return [];
 
 		for(var i = 0; i < reqrs.length; i++){
-			var n = reqrs[i].replace(/^require\(/, "").replace(/\)$/, "")
+			var n = reqrs[i].replace(/^[^\.]require\(/, "").replace(/\)$/, "")
 			n = n.replace(/(^['"]+|['"]+$)/g, "");
 
 			var pth = path.resolve(this.rel_dir_name, n);
@@ -54,7 +54,7 @@ var File = function(file_spec, base_dir){
 
 				req = this.obj_map.lookup(objPth);
 				if(!req)
-					throw "Couldn't resolve dependancy for '" + objNameFromFileName(pth) + "' or '" + objPth + "' (source = " + reqrs[i] + ")";
+					throw this.rel_file_name + ": Couldn't resolve dependancy for '" + objNameFromFileName(pth) + "' or '" + objPth + "' (source = " + reqrs[i] + ")";
 			}
 
 			this.req_map[objPth] = reqrs[i];

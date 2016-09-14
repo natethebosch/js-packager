@@ -43,21 +43,6 @@ var compiler = function(compiler_spec){
 		files[i].checkForCircularRefs({ map: objMap, max_depth: objMap.length, path: [] }); // will throw if exists
 	}
 
-	// sort by requires (less at beginning)
-	// pre-sort to actual dependancy sort to reduce
-	// computation time
-//	files.sort(function(a, b){
-//		if(a.requires.length != b.requires.length)
-//			return a.requires.length - b.requires.length;
-//
-//		// use alpha sort to ensure same result every time (async file loading introduces some randomness)
-//		if(a.obj_name > b.obj_name)
-//			return 1;
-//		else if(b.obj_name > a.obj_name)
-//			return -1;
-//	});
-
-
 	// sort so that dependancies are at nearer to the front
 	files = (function(file_list){
 
@@ -107,7 +92,8 @@ var compiler = function(compiler_spec){
     var file = __dirname + "/compiler/framework-methods.js";
 	var frameworkMethods = fs.readFileSync(file).toString();
 
-	var out = "var " + compiler_spec.package_name + " = (function(){" + "\n"
+	var out = "if(window == undefined){ console.log('Running in node env (window is not defined)'); var window = {}; }" + "\n"
+	    + "var " + compiler_spec.package_name + " = (function(){" + "\n"
 		+ indent(frameworkMethods) + "\n\n"
 		+ indent(build.join("\n\n")) + "\n\n"
 		+ indent("return getObject()") + "\n"
