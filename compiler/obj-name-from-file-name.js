@@ -14,8 +14,9 @@ var transform = function(fname){
 
 	fname = fname.replace(/(^\/|\.js$)/g, "");
 
-	if(fname.indexOf(".") != -1)
-		throw "can't have a dot in the middle of compiled js file name";
+	if(fname.indexOf(".") != -1){
+		throw "can't have a dot in the middle of compiled js file name (for file " + fname + ")";
+    }
 
 	fname = fname.replace(/\//g, ".");
 

@@ -23,7 +23,7 @@ var File = function(file_spec, base_dir){
 	this.rel_dir_name = path.dirname(this.rel_file_name);
 	this.file_contents = file_spec.file_contents;
 
-	this.obj_name = objNameFromFileName(this.rel_file_name);
+	this.obj_name = objNameFromFileName(this.rel_file_name.replace(".js", "").replace(/\./g, "_") + ".js");
 
 	this.requires = []; // a.b.c
 	this.req_map = {}; // a.b.c => 'require("./a/b/c")'
