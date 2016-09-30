@@ -92,7 +92,11 @@ var compiler = function(compiler_spec){
     var file = __dirname + "/compiler/framework-methods.js";
 	var frameworkMethods = fs.readFileSync(file).toString();
 
-	var out = "if(window == undefined){ console.log('Running in node env (window is not defined)'); var window = {}; }" + "\n"
+	var out = "if(window == undefined){ console.log('Running in node env (window is not defined)'); var window = {}; \n"+
+	" // missing items in node\n" +
+	" var XMLHttpRequest = require('xhr2');\n"+
+	" var btoa = require('btoa');\n" +
+	"}" + "\n"
 	    + "var " + compiler_spec.package_name + " = (function(){" + "\n"
 		+ indent(frameworkMethods) + "\n\n"
 		+ indent(build.join("\n\n")) + "\n\n"
