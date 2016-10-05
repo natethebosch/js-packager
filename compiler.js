@@ -96,6 +96,7 @@ var compiler = function(compiler_spec){
 	" // missing items in node\n" +
 	" var XMLHttpRequest = require('xhr2');\n"+
 	" var btoa = require('btoa');\n" +
+	" var atob = require('atob');\n" +
 	"}" + "\n"
 	    + "var " + compiler_spec.package_name + " = (function(){" + "\n"
 		+ indent(frameworkMethods) + "\n\n"
