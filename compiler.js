@@ -97,6 +97,8 @@ var compiler = function(compiler_spec){
 	" var XMLHttpRequest = require('xhr2');\n"+
 	" var btoa = require('btoa');\n" +
 	" var atob = require('atob');\n" +
+	" var cnsl = console.log; console.log = function(){ }; var debug = function(str) { cnsl(str); };" +
+		" debug('removing console.log to prevent excess output. use debug(<str>); to output to stdout'); " +
 	"}" + "\n"
 	    + "var " + compiler_spec.package_name + " = (function(){" + "\n"
 		+ indent(frameworkMethods) + "\n\n"
